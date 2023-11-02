@@ -5,6 +5,31 @@
         </h2>
     </x-slot>
 
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+          background-color: rgb(204, 205, 206)
+        }
+        
+        td{
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+
+        th{
+            border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+          background-color: #ffffff;
+        }
+        </style>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -13,14 +38,24 @@
                     <form action="{{ route('chirps.store') }}" method="POST">
                         @csrf
 
+
+                        <input type="text" name="task" placeholder="{{ __('Insert task name') }}" >
+
+                            {{-- Muestra la validacion --}}
+                            <x-input-error :messages="$errors->get('task')" class="mt-2" />
+
+
+
                         {{-- Tiene el name, y tambien el old que hace que una vez la validacion no se borre el contenido --}}
                         <textarea name="message" 
                                   placeholder="{{ __('Whats on your mind?') }}"  
                                   class="block w-full rounded-md border-gray-300 bg-white shadow-sm transition-colors duration-300 focus:border-indigo-300 dark:focus:ring-indigo200 dark:focus:ring-opacity-50"
                         >{{ old('message') }}</textarea>
 
-                        {{-- Muestra el error --}}
-                        <x-input-error :messages="$errors->get('message')" class="mt-2" />
+                            {{-- Muestra la validacion --}}
+                            <x-input-error :messages="$errors->get('message')" class="mt-2" />
+
+
 
                         {{-- Muestra el boton --}}
                         <x-primary-button class="mt-4">
@@ -30,7 +65,32 @@
 
                     
                 </div>
-            </div>
+            </div><br>
+
+
+            <table>
+              
+                <tr>
+                  <th>Usuario</th>
+                  <th>Nombre Tarea</th>
+                  <th>Mensaje</th>
+                  <th>Acciones</th>
+                </tr>
+
+                @foreach($chirps as $datos )
+                 <tr>
+                    {{-- Para llamar el nombre se deben ajustar unas cosas en el modelo --}}
+                    <th>{{ $datos->user->name }}</th>
+                    <td>{{ $datos->task }}</td>
+                    <td>{{ $datos->message }}</td>
+                    <td><a href="{{ route('chirps.edit', $datos) }}">{{ __('Edit Tarea') }}</a></td>
+                    <td><a href="">Eliminar</a></td>
+                 </tr>
+                @endforeach
+
+            </table> 
+
+
         </div>
     </div>
 </x-app-layout>

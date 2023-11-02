@@ -10,9 +10,13 @@ class ChirpController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    //Aqui estamos mostrando la vista index dentro de la carpeta Chirps, luego creamos un array donde accedemos al modelo y traemos todos los datos para mostralos en esta vista.
     public function index()
     {
-        return view('chirps.index');
+        return view('chirps.index', [
+            'chirps' => Chirp::with('user')->latest()->get()
+        ]);
 
     }
 
@@ -32,16 +36,17 @@ class ChirpController extends Controller
 
         //Asi se hacen las validaciones
         $request->validate([
-            'message' => ['required', 'min:3', 'max:16']
+            'task' => ['required', 'min:4', 'max:30'],
+            'message' => ['required', 'min:3', 'max:150']
         ]);
 
-        // Arriba se llama el modelo Chirp para luego utilizarlo junto ala funcion 
-        // create la cual inserta los datos mostrados y el message que viene del 
-        // formulario.
-        Chirp::create([
+
+        // Acceder al usuario AUTENTICADO, luego accerder a la relacion con sus CHIRPS y crear una tarea con los valores resividos.
+        auth()->user()->chirps()->create([
+            'task' => $request->get('task'),
             'message' => $request->get('message'),
-            'user_id' => auth()->id(),
         ]);
+
 
         session()->flash('status', __('Chirp created successfully'));
 
@@ -62,7 +67,10 @@ class ChirpController extends Controller
      */
     public function edit(Chirp $chirp)
     {
-        //
+        return view('chirps.edit', [
+            'chirp' => $chirp
+        ]);
+
     }
 
     /**

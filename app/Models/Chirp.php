@@ -4,13 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 
 class Chirp extends Model
 {
     use HasFactory;
     
     protected $fillable = [
+        'task',
         'message',
-        'user_id',
     ];
+
+    // Esto permite relacionar las tareas creadas al usuario
+    public function user(): BelongsTo{
+        return $this->belongsTo(User::class);
+    }
 }
+
+
+
