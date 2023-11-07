@@ -15,10 +15,10 @@
                         @csrf @method('PUT')
 
 
-                        <input type="text" name="task" placeholder="{{ __('Insert task name') }}">
-
-                            {{-- Muestra la validacion --}}
-                            <x-input-error :messages="$errors->get('task')" class="mt-2" />
+                        <input type="text" name="task" value="{{ old('task', $chirp->task) }}" placeholder="{{ __('Insert task name') }}">
+                        
+                        {{-- Muestra la validacion --}}
+                        <x-input-error :messages="$errors->get('task')" class="mt-2" />
 
 
 
@@ -28,8 +28,8 @@
                           >{{ old('message', $chirp->message) }}
                         </textarea>
 
-                            {{-- Muestra la validacion --}}
-                            <x-input-error :messages="$errors->get('message')" class="mt-2" />
+                        {{-- Muestra la validacion --}}
+                        <x-input-error :messages="$errors->get('message')" class="mt-2" />
 
 
 
