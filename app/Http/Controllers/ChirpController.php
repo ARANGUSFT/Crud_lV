@@ -67,6 +67,9 @@ class ChirpController extends Controller
      */
     public function edit(Chirp $chirp)
     {
+        // Valida que el usuario autenticado no es el que creo las tareas muestra un error
+        $this->authorize('update',$chirp);
+
         return view('chirps.edit', [
             'chirp' => $chirp
         ]);
@@ -78,7 +81,24 @@ class ChirpController extends Controller
      */
     public function update(Request $request, Chirp $chirp)
     {
-        //
+
+        $this->authorize('update',$chirp);
+
+
+        //Asi se hacen las validaciones
+        $validate = $request->validate([
+            'task' => ['required', 'min:4', 'max:30'],
+            'message' => ['required', 'min:3', 'max:150']
+        ]);
+
+        // Se validan de que esten bien y se actualiza
+        $chirp->update($validate);
+
+        // Retorna a la vista con un mensaje
+        return to_route('chirps.index')
+        ->with('status', __('Chirp update successfully'));
+
+
     }
 
     /**
@@ -86,6 +106,11 @@ class ChirpController extends Controller
      */
     public function destroy(Chirp $chirp)
     {
-        //
+        $this->authorize('delete', $chirp);
+
+        $chirp->delete();
+
+        return to_route('chirps.index')
+        ->with('status', __('Chirp deleted successfully'));
     }
 }

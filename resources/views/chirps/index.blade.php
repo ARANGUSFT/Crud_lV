@@ -83,8 +83,17 @@
                     <th>{{ $datos->user->name }}</th>
                     <td>{{ $datos->task }}</td>
                     <td>{{ $datos->message }}</td>
-                    <td><a href="{{ route('chirps.edit', $datos) }}">{{ __('Edit Tarea') }}</a></td>
-                    <td><a href="">Eliminar</a></td>
+                    <td><a href="{{ route('chirps.edit', $datos) }}">{{ __('Edit Tarea') }}</a>
+
+                     <form method="POST" action="{{ route('chirps.destroy', $datos) }}">
+                        @csrf @method('DELETE')
+                        {{-- <td><a href="{{ route('chirps.destroy', $datos) }}" onclick="event.preventDefault(); this.closest('form').submit();" >{{ __('Delete Task') }}</a></td> --}}
+                       <button type="submit" class="btn btn-danger">{{ __('Delete Task') }}</button>
+                     </form>
+
+                    </td>
+                  
+                    
                  </tr>
                 @endforeach
 

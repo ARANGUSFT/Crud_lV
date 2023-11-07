@@ -11,8 +11,8 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
 
-                    <form action="#" method="POST">
-                        @csrf
+                    <form action="{{ route('chirps.update', $chirp ) }}" method="POST">
+                        @csrf @method('PUT')
 
 
                         <input type="text" name="task" placeholder="{{ __('Insert task name') }}">
